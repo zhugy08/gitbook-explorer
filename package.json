@@ -2,7 +2,7 @@
 	"name": "gitbook-explorer",
 	"displayName": "gitbook-explorer",
 	"description": "vscode plugin for gitbook",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
