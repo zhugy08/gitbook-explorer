@@ -1,0 +1,7 @@
+.vscode/
+build/
+node_modules/
+dist/
+.vscodeignore
+vsc-extension-quickstart.md
+.eslintrc.json
