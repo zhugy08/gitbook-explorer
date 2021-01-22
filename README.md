@@ -1,65 +1,36 @@
 # gitbook-explorer README
 
-This is the README for your extension "gitbook-explorer". After writing up a brief description, we recommend including the following sections.
+Gitbook编辑器总是存在这样或那样的问题，使得编辑过程不是十分流畅，并且因为某些原因Gitbook编辑器现在还没办法下载，所以想到建立一个插件使vscode也能方便、直观地编辑Gitbook工程，使得即便对编程不十分熟悉的用户也能快速上手编辑Gitbook文件。
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Gitbook Explorer
 
-For example if there is an image subfolder under your extension project workspace:
+* 根据SUMMARY.md文件显示目录树
+* 添加、删除和重命名目录项
+* 点击目录项打开对应文件进行编辑
+* 重新设置目录对应文件
+* 添加或重新设置文件时可选创建新文件或打开已有文件
+* 目录修改后自动保存SUMMARY.md
+* 拖动目录项改变目录结构(待完成)
 
-\!\[feature X\]\(images/feature-x.png\)
+### 编辑快捷菜单(待完成)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+* 格式化：H1-H6、列表项
+* 插入: 引用、公式、图片
+* 显示markdown基本语法帮助
+* 显示预览
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
+Initial release of gitbook-explorer
+完成目录更新、显示、编辑和保存功能
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**

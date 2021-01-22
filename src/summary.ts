@@ -7,6 +7,7 @@ export class Item{
         public name:string,
         public path:string,
         public indice: number,
+        public parent: Item | null,
         public children: Item[]
     ){}
 }
@@ -19,7 +20,7 @@ export function parseSummary(p:string):Item[]{
     let items : Item[] = [];
     let topItems: Item[] = [];
     lines.forEach(line=>{
-        line.replace('\t', tabreplace)
+        line.replace('\t', tabreplace);
         //if is correct format
         let matchlist = line.match(/\s*\*\s*\[.*]\s*\(.*\)/);
         if(matchlist){
@@ -27,7 +28,7 @@ export function parseSummary(p:string):Item[]{
             let idc = matched.indexOf('*');
             let name = subString(matched, matched.indexOf('[') + 1, matched.indexOf(']'));
             let path = subString(matched, matched.indexOf('(') + 1, matched.indexOf(')')).trim();
-            let item = new Item(name, path, idc, []);
+            let item = new Item(name, path, idc, null,  []);
 
             let parent : Item|null = null;
             for(let i=items.length - 1; i>=0; i--){
@@ -41,6 +42,7 @@ export function parseSummary(p:string):Item[]{
                 topItems.push(item);
             }
             else{
+                item.parent = parent;
                 parent.children.push(item);
             }
         }
@@ -55,6 +57,6 @@ function readFile(p:string):string[]{
         const lines = data.split(/\r?\n/);
         return lines;
     }catch(err){
-        return []
+        return [];
     }
 }

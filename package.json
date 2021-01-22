@@ -10,22 +10,154 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:gitbook-explorer.helloWorld"
+		"onView:gitbook-summary"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "gitbook-explorer.helloWorld",
-				"title": "Hello World"
+				"command": "gitbook-explorer.refresh",
+				"title": "Refresh",
+				"icon":{
+					"light":"resources/refresh-light.svg",
+					"dark":"resources/refresh-dark.svg"
+				}
+			},
+			{
+				"command": "gitbook-explorer.add-sibling",
+				"title": "Add Sibling"
+			},
+			{
+				"command": "gitbook-explorer.add-child",
+				"title": "Add Child",
+				"icon":{
+					"light":"resources/add-light.svg",
+					"dark":"resources/add-dark.svg"
+				}
+			},
+			{
+				"command": "gitbook-explorer.edit",
+				"title": "Edit"
+			},
+			{
+				"command": "gitbook-explorer.delete",
+				"title": "Delete"
+			},
+			{
+				"command": "gitbook-explorer.rename",
+				"title": "Rename"
+			},
+			{
+				"command": "gitbook-explorer.retarget",
+				"title": "Change File"
+			},
+			{
+				"command": "gitbook-explorer.md-help",
+				"title": "Markdown Help",
+				"icon":{
+					"light":"resources/help-light.svg",
+					"dark":"resources/help-dark.svg"
+				}
+			},
+			{
+				"command": "gitbook-explorer.md-insert",
+				"title": "Insert ...",
+				"icon":{
+					"light":"resources/insert-light.svg",
+					"dark":"resources/insert-dark.svg"
+				}
+			},
+			{
+				"command": "gitbook-explorer.md-format",
+				"title": "Format ...",
+				"icon":{
+					"light":"resources/format-light.svg",
+					"dark":"resources/format-dark.svg"
+				}
+			},
+			{
+				"command": "gitbook-explorer.md-preview",
+				"title": "Preview",
+				"icon":{
+					"light":"resources/preview-light.svg",
+					"dark":"resources/preview-dark.svg"
+				}
 			}
 		],
+		"menus":{
+			"view/title": [
+				{
+					"command": "gitbook-explorer.refresh",
+					"when": "view==gitbook-summary",
+					"group": "navigation"
+				},
+				{
+					"command": "gitbook-explorer.add-child",
+					"when": "view==gitbook-summary",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "gitbook-explorer.edit",
+					"when": "view==gitbook-summary",
+					"group": "inline"
+				},
+				{
+					"command": "gitbook-explorer.add-sibling",
+					"when": "view==gitbook-summary",
+					"group": "add@1"
+				},
+				{
+					"command": "gitbook-explorer.add-child",
+					"when": "view==gitbook-summary",
+					"group": "add@2"
+				},
+				{
+					"command": "gitbook-explorer.rename",
+					"when": "view==gitbook-summary",
+					"group": "reoper@1"
+				},
+				{
+					"command": "gitbook-explorer.retarget",
+					"when": "view==gitbook-summary",
+					"group": "reoper@2"
+				},
+				{
+					"command": "gitbook-explorer.delete",
+					"when": "view==gitbook-summary",
+					"group": "delete"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "gitbook-explorer.md-help",
+					"group": "navigation",
+					"when": "resourceLangId == markdown"
+				},
+				{
+					"command": "gitbook-explorer.md-format",
+					"group": "navigation",
+					"when": "resourceLangId == markdown"
+				},
+				{
+					"command": "gitbook-explorer.md-preview",
+					"group": "navigation",
+					"when": "resourceLangId == markdown"
+				},
+				{
+					"command": "gitbook-explorer.md-insert",
+					"group": "navigation",
+					"when": "resourceLangId == markdown"
+				}
+			]
+		},
 		"viewsContainers":{
 			"activitybar": [
 				{
 					"id":"gitbook-explorer-pane",
 					"title":"Gitbook Explorer",
-					"icon": "book.svg"
+					"icon": "resources/book.svg"
 				}
 			]
 		},
