@@ -4,6 +4,8 @@ import { fstat } from 'fs';
 import * as vscode from 'vscode';
 import { Item } from './summary';
 import * as summary from './summary_list';
+import * as path from 'path';
+
 
 class QuickPickKeyItem implements vscode.QuickPickItem{
 	constructor(
@@ -82,14 +84,21 @@ export function activate(context: vscode.ExtensionContext) {
 		item.editFile();
 	});
 	vscode.commands.registerCommand('gitbook-explorer.md-help', (item:summary.Page)=>{
-		vscode.window.showInformationMessage('gitbook-explorer md-help');
+		//vscode.window.showInformationMessage('gitbook-explorer md-help');
+		let uri =  vscode.Uri.file(path.join(context.extensionPath, "resources/help.md"));
+		vscode.commands.executeCommand('vscode.open', uri).then(success=>{
+			if(success){
+				vscode.commands.executeCommand("markdown.showPreviewToSide");
+			}
+		});
 	});
 	vscode.commands.registerCommand('gitbook-explorer.md-insert', (item:summary.Page)=>{
 		let items:QuickPickKeyItem[] = [
-			{label: "Image", key:"Image"},
+			{label: "Image", key:"![${1:alt-text}](${2:url-to-image})"},
+			{label: "Image Local", key:"ImageUpload"},
 			{label: "Link", key:"Link"},
 			{label: "Quote", key:"Quote"},
-			{label: "Formula", key:"Formula"}
+			{label: "Formula", key:"$$formula$$"}
 		];
 		vscode.window.showQuickPick(items,
 			{
@@ -97,28 +106,70 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		).then(sel=>{
 			if(sel){
+				let textEditor = vscode.window.activeTextEditor;
 				switch(sel.key){
 					case "Link":
-						break;
-					case "Formula":
-						break;
-					case "Image":
+						if (textEditor) {
+							if(textEditor.selection.isEmpty){
+								textEditor.insertSnippet(
+									new vscode.SnippetString("[${1:link-text}](${2:link-url})"), 
+									textEditor.selection);
+							}
+							else{
+								textEditor.insertSnippet(
+									new vscode.SnippetString("[$TM_SELECTED_TEXT](${1:link-url})"), 
+									textEditor.selection);
+							}
+						}
 						break;
 					case "Quote":
+						if (textEditor) {
+							if(textEditor.selection.isEmpty){
+								textEditor.insertSnippet(
+									new vscode.SnippetString("```\r\n${1:content}\r\n```\r\n"), 
+									textEditor.selection);
+							}
+							else{
+								textEditor.insertSnippet(
+									new vscode.SnippetString("```\r\n$TM_SELECTED_TEXT\r\n```\r\n"), 
+									textEditor.selection);
+							}
+						}
+						break;
+					case "ImageUpload":
+						vscode.window.showOpenDialog({
+							filters:{
+								"image": ['png', 'jpg', 'jpeg', 'gif', 'tif', 'svg']
+							}
+						}).then(uri=>{
+							if(uri){
+								//如果不再在当前目录就上传
+								//path.relative()
+								let relpath = "";
+								insertSnippet(new vscode.SnippetString(
+									"![${1:alt-text}]("+relpath+")"
+								));
+							}
+						});
+						break;
+					default:
+						insertSnippet(new vscode.SnippetString(sel.key));
 						break;
 				}
 			}
 		});
 	});
-	vscode.commands.registerCommand('gitbook-explorer.md-format', (item:summary.Page)=>{
+
+	vscode.commands.registerCommand('gitbook-explorer.md-format', 
+	()=>{
 		let items:QuickPickKeyItem[] = [
-			{label: "H1", key:"H1"},
-			{label: "H2", key:"H2"},
-			{label: "H3", key:"H3"},
-			{label: "H4", key:"H4"},
-			{label: "H5", key:"H5"},
-			{label: "H6", key:"H6"},
-			{label: "List", key:"List"}
+			{label: "H1", key:"# "},
+			{label: "H2", key:"## "},
+			{label: "H3", key:"### "},
+			{label: "H4", key:"#### "},
+			{label: "H5", key:"##### "},
+			{label: "H6", key:"###### "},
+			{label: "List", key:"* "}
 		];
 		vscode.window.showQuickPick(items,
 			{
@@ -126,24 +177,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		).then(sel=>{
 			if(sel){
-				switch(sel.key){
-					case "H1":
-						break;
-					case "H2":
-						break;
-					case "H3":
-						break;
-					case "H4":
-						break;
-					case "H5":
-						break;
-					case "H6":
-						break;
-					case "Link":
-						break;
-					case "Formula":
-						break;
-				}
+				insertAtLineStart(sel.key);
 			}
 		});
 	});
@@ -168,6 +202,26 @@ export function activate(context: vscode.ExtensionContext) {
 		summaryList.update();
 		summaryList.updateSummaryFile();
 	});
+}
+
+function insertSnippet(snippet:vscode.SnippetString){
+	let textEditor = vscode.window.activeTextEditor;
+	if(textEditor){
+		textEditor.insertSnippet(snippet,  textEditor.selection);
+	}
+}
+
+function insertAtLineStart(str:string){
+	let textEditor = vscode.window.activeTextEditor;
+	if(textEditor){
+		let start = textEditor.selection.start;
+		let lineStart = new vscode.Position(start.line, 0);
+		textEditor.edit(
+			editBuilder=>{
+				editBuilder.insert(lineStart, str);
+			}
+		);
+	}
 }
 
 // this method is called when your extension is deactivated

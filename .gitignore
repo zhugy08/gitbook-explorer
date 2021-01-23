@@ -5,3 +5,4 @@ dist/
 .vscodeignore
 vsc-extension-quickstart.md
 .eslintrc.json
+*.vsix

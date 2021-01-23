@@ -3,6 +3,9 @@
 	"displayName": "gitbook-explorer",
 	"description": "vscode plugin for gitbook",
 	"version": "1.0.0",
+	"publisher": "weixingmayi",
+	"license": "BSD license",
+	"repository": "https://github.com/zhugy08/gitbook-explorer",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
@@ -10,7 +13,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:gitbook-summary"
+		"onView:gitbook-summary",
+		"onLanguage:markdown"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -168,6 +172,16 @@
 					"name":"Summary"
 				}
 			]
+		},
+		"configuration":{
+			"title": "Gitbook Explorer",
+			"properties": {
+				"gitbook-explorer.uploadDirectory":{
+					"type":"string",
+					"default": "images",
+					"description": "Set the directory for uploaded images. The name will be used as a relative path from the editing file except when it is a absolute path."
+				}
+			}
 		}
 	},
 	"scripts": {
