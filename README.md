@@ -22,16 +22,12 @@ Gitbook编辑器总是存在这样或那样的问题，使得编辑过程不是�
 * 显示预览
 * 图片上传(待完成)
 
-## Extension Settings
+## 安装方法
+
+vscode -> Extensions -> ... -> Install from VSIX...
 
 
 ## Known Issues
 
 
-## Release Notes
-
-### 1.0.0
-
-Initial release of gitbook-explorer
-完成目录更新、显示、编辑和保存功能
 
