@@ -1,6 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { fstat } from 'fs';
+import {mkdirSync, copyFileSync, fstat, existsSync} from 'fs';
 import * as vscode from 'vscode';
 import { Item } from './summary';
 import * as summary from './summary_list';
@@ -145,10 +145,59 @@ export function activate(context: vscode.ExtensionContext) {
 							if(uri){
 								//如果不再在当前目录就上传
 								//path.relative()
-								let relpath = "";
-								insertSnippet(new vscode.SnippetString(
-									"![${1:alt-text}]("+relpath+")"
-								));
+								let imagePath = "";
+								let imagePathConfig = vscode.workspace.getConfiguration().get('gitbook-explorer.uploadDirectory');
+								if(imagePathConfig){
+									imagePath = imagePathConfig as string;
+									imagePath = imagePath.trim();
+									console.log("Image path setting: " + imagePath);
+								}
+
+								let filePathName = vscode.window.activeTextEditor?.document.uri.fsPath;
+								if (filePathName) {
+									let filename = path.basename(filePathName);
+									let pathDir = filePathName.substring(0, filePathName.length - filename.length);
+									let ext = filename?.lastIndexOf('.');
+									if (ext) {
+										filename = filename?.substr(0, ext);
+									}
+									console.log("path: " + pathDir);
+
+									if (!path.isAbsolute(imagePath)) {
+
+										if (pathDir && filename) {
+											if (imagePath.length === 0) {
+												imagePath = path.join(pathDir, filename);
+											}
+											else {
+												imagePath = path.join(pathDir, imagePath);
+											}
+										}
+									}
+									else {
+										console.log("Error file path name");
+									}
+
+									console.log("Upload image path: " + imagePath);
+
+									let fileName = uri[0].fsPath;
+									let sFileName = path.basename(fileName);
+									let targetFileName = path.join(imagePath, sFileName);
+									if (uri[0].fsPath !== targetFileName) {
+										if(!existsSync(imagePath)){
+											mkdirSync(imagePath);
+										}
+										copyFileSync(fileName, targetFileName);
+									}
+
+									if (pathDir) {
+										let relpath = path.relative(pathDir, targetFileName);
+										insertSnippet(new vscode.SnippetString(
+											"![${1:alt-text}](" + relpath + ")"
+										));
+									}
+								}
+								
 							}
 						});
 						break;

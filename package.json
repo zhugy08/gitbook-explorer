@@ -2,7 +2,7 @@
 	"name": "gitbook-explorer",
 	"displayName": "gitbook-explorer",
 	"description": "vscode plugin for gitbook",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"publisher": "weixingmayi",
 	"license": "BSD license",
 	"repository": "https://github.com/zhugy08/gitbook-explorer",
@@ -178,7 +178,7 @@
 			"properties": {
 				"gitbook-explorer.uploadDirectory":{
 					"type":"string",
-					"default": "images",
+					"default": "",
 					"description": "Set the directory for uploaded images. The name will be used as a relative path from the editing file except when it is a absolute path."
 				}
 			}
