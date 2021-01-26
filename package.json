@@ -5,7 +5,7 @@
 	"version": "1.2.0",
 	"publisher": "weixingmayi",
 	"license": "BSD license",
-	"repository": "https://github.com/zhugy08/gitbook-explorer",
+	"repository": "https://github.com/zhugy08/gitbook-explorer.git",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
@@ -69,7 +69,7 @@
 			},
 			{
 				"command": "gitbook-explorer.retarget",
-				"title": "Change File"
+				"title": "Retarget"
 			},
 			{
 				"command": "gitbook-explorer.md-help",
