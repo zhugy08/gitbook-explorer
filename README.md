@@ -4,7 +4,7 @@ Gitbook编辑器总是存在这样或那样的问题，使得编辑过程不是�
 
 ## Features
 
-![Overview Image](/resources/intro1.png)
+![Overview Image](resources/intro1.png)
 
 ### Gitbook Explorer
 
