@@ -2,7 +2,7 @@
 	"name": "gitbook-explorer",
 	"displayName": "gitbook-explorer",
 	"description": "vscode plugin for gitbook",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"publisher": "weixingmayi",
 	"license": "BSD license",
 	"repository": "https://github.com/zhugy08/gitbook-explorer",
@@ -18,6 +18,22 @@
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"taskDefinitions": [
+			{
+				"type": "gitbook",
+				"required": ["command"],
+				"properties": {
+					"command":{
+						"type":"string",
+						"description": "The command to execute"
+					},
+					"args":{
+						"type":"string",
+						"description": "The arguments used for executing command"
+					}
+				}
+			}
+		],
 		"commands": [
 			{
 				"command": "gitbook-explorer.refresh",
@@ -86,6 +102,22 @@
 					"light":"resources/preview-light.svg",
 					"dark":"resources/preview-dark.svg"
 				}
+			},
+			{
+				"command": "gitbook-explorer.md-preview-browser",
+				"title":"Preview in browser",
+				"icon":{
+					"light":"resources/preview-light.svg",
+					"dark":"resources/preview-dark.svg"
+				}
+			},
+			{
+				"command": "gitbook-explorer.run-serve",
+				"title": "Run Gitbook Serve",
+				"icon":{
+					"light": "resources/run-light.svg",
+					"dark": "resources/run-dark.svg"
+				}
 			}
 		],
 		"menus":{
@@ -99,6 +131,10 @@
 					"command": "gitbook-explorer.add-child",
 					"when": "view==gitbook-summary",
 					"group": "navigation"
+				},{
+					"command": "gitbook-explorer.run-serve",
+					"when": "view==gitbook-summary",
+					"group": "navigation"
 				}
 			],
 			"view/item/context": [
@@ -106,6 +142,11 @@
 					"command": "gitbook-explorer.edit",
 					"when": "view==gitbook-summary",
 					"group": "inline"
+				},
+				{
+					"command": "gitbook-explorer.md-preview-browser",
+					"when": "view==gitbook-summary",
+					"group": "preview"
 				},
 				{
 					"command": "gitbook-explorer.add-sibling",

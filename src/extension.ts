@@ -5,7 +5,13 @@ import * as vscode from 'vscode';
 import { Item } from './summary';
 import * as summary from './summary_list';
 import * as path from 'path';
+import {GitbookTaskProvider} from './gitbookTaskProvider';
 
+interface GitbookTaskDefinition extends vscode.TaskDefinition{
+
+}
+
+let gitbookTaskProviderDispose: vscode.Disposable | undefined;
 
 class QuickPickKeyItem implements vscode.QuickPickItem{
 	constructor(
@@ -20,6 +26,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const summaryList = new summary.PagesProvider();
 	vscode.window.registerTreeDataProvider('gitbook-summary', summaryList);
+
+	let gitbookTaskProvider = new GitbookTaskProvider();
+	gitbookTaskProviderDispose = vscode.tasks.registerTaskProvider(
+		GitbookTaskProvider.gitbookType,
+		gitbookTaskProvider
+	);
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -247,10 +259,42 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('gitbook-explorer.retarget', (item:summary.Page)=>{
 		item.retarget();
 	});
+
+	vscode.commands.registerCommand('gitbook-explorer.md-preview-browser',(page: summary.Page)=>{
+		let subPath = page.line.path;
+		let url = `http://localhost:4000/${subPath}`.replace('.md', '.html');
+		const taskname = "browser preview";
+		const nt: GitbookTaskDefinition = {
+			type: "gitbook",
+			command: taskname
+		};
+		const task = new vscode.Task(nt,
+			vscode.TaskScope.Workspace,
+			taskname,
+			'gitbook',
+			new vscode.ShellExecution(`start ${url}`));
+		vscode.tasks.executeTask(task);
+	});
+
 	vscode.commands.registerCommand('gitbook-explorer.save-summary', ()=>{
 		summaryList.update();
 		summaryList.updateSummaryFile();
 	});
+	
+	vscode.commands.registerCommand('gitbook-explorer.run-serve', () => {
+		const taskname = "serve";
+		const nt: GitbookTaskDefinition = {
+			type: "gitbook",
+			command: taskname
+		};
+		const task = new vscode.Task(nt,
+			vscode.TaskScope.Workspace,
+			taskname,
+			'gitbook',
+			new vscode.ShellExecution(`gitbook ${taskname}`));
+		vscode.tasks.executeTask(task);
+	});
+	
 }
 
 function insertSnippet(snippet:vscode.SnippetString){
@@ -274,4 +318,8 @@ function insertAtLineStart(str:string){
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+	if(gitbookTaskProviderDispose){
+		gitbookTaskProviderDispose.dispose();
+	}
+}
