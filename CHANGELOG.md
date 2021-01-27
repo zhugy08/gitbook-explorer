@@ -15,3 +15,8 @@
 
 - 增加Gitbook serve
 - 增加在浏览器中打开预览
+
+## [1.2.1]
+
+- 修改了LICENSE
+- 修改readme
