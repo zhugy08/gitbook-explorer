@@ -110,7 +110,10 @@ export function activate(context: vscode.ExtensionContext) {
 			{label: "Image Local", key:"ImageUpload"},
 			{label: "Link", key:"Link"},
 			{label: "Quote", key:"Quote"},
-			{label: "Formula", key:"$$formula$$"}
+			{label: "Formula Inline", key:"$$${1:formula}$$"},
+			{label: "Formula Block", key:"$$\n${1:formula}\n$$"},
+			{label: "Include", key:"{% include \"${1:url}\" %}"}
+			//{label: "Navi to", key:"NaviTo"},与link一致
 		];
 		vscode.window.showQuickPick(items,
 			{

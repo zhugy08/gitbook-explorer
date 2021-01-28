@@ -20,3 +20,9 @@
 
 - 修改了LICENSE
 - 修改readme
+
+## [1.2.2]
+
+- 插入中增加Formula Inner、Formula Block
+- 插入中增加include
+
